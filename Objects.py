@@ -50,5 +50,5 @@ class ball():
         if paddle == 0:
             self.dir = self.dir * -1
         else:
-            self.dir = paddle.speed
+            self.dir = self.dir + paddle.speed
             self.dir1 = self.dir1 * -1
