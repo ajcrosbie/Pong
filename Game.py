@@ -57,11 +57,11 @@ def main():
 
         if ball.pos[0] < 0:
             score1 = score1 + 1
-            print(score2, ':', score1)
+            print(score1, ':', score2)
             reset(paddle, paddle1, ball, height)
         elif ball.pos[0] > width:
             score2 = score2 + 1
-            print(score2, ':', score1)
+            print(score1, ':', score2)
             reset(paddle, paddle1, ball, height)
         redrawwindow(win, paddle, paddle1, ball)
 
