@@ -62,7 +62,22 @@ def custom():
         size3 = (size2, size)
     else:
         size3 = (30, 100)
-    return GameMode, speed, size3
+    choice = 0
+    choice = input('do you want to change ball speed? y/n ')
+    if choice == 'y':
+        print('what speed? 1 to 30 is recomended')
+        print('must be integer and smaller than')
+        ballSpeed = int(
+            input('the x axis of paddle(30 if unchanged)'))
+        while not t:
+            if ballSpeed % 1 > 0:
+                ballSpeed = int(input(
+                    'what speed? must be integer '))
+            else:
+                t = True
+    else:
+        ballSpeed = 20
+    return GameMode, speed, size3, ballSpeed
 
 
 def redrawwindow(win, paddle, paddle1, ball):
@@ -93,12 +108,18 @@ def reset(paddle, paddle1, ball, height):
 
 
 def main():
+    GameMode = 'normal'
+    speed = 10
+    size = (30, 100)
+    ballSpeed = 20
     v = input('do you want to customise the game? y/n ')
     if v == 'y':
         v = custom()
         GameMode = v[0]
         speed = v[1]
         size = v[2]
+        ballSpeed = v[3]
+
     width = 1000
     height = 500
     score1 = 0
@@ -107,6 +128,7 @@ def main():
     paddle = Objects.paddle((10, height/2 - 50), 0)
     paddle1 = Objects.paddle((1000 - size[0] - 10, height/2 - 50), 1)
     ball = Objects.ball((500, 250))
+    ball.dir1 = ballSpeed
     paddle.size = size
     paddle1.size = size
     clock = pygame.time.Clock()
