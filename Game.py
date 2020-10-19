@@ -30,9 +30,23 @@ def reset(paddle, paddle1, ball, height):
     paddle1.pos = (960, height/2 - 50)
     ball.pos = (500, 250)
     ball.dir = 0
+    paddle.speed = 0
+    paddle1.speed = 0
 
 
 def main():
+    GameMode = input('high or normal ')
+    if GameMode == 'high':
+        pass
+    elif GameMode == 'normal':
+        pass
+    else:
+        t = False
+        while not t:
+            if GameMode == 'high':
+                t = True
+            elif GameMode == 'normal':
+                t = True
     width = 1000
     height = 500
     score1 = 0
@@ -47,8 +61,12 @@ def main():
         clock.tick(10)
 
         keys = pygame.key.get_pressed()
-        paddle.move(keys)
-        paddle1.move(keys)
+        if GameMode == 'high':
+            paddle.highMove(keys)
+            paddle1.highMove(keys)
+        elif GameMode == 'normal':
+            paddle.move(keys)
+            paddle1.move(keys)
         ball.move()
         touching(ball, paddle)
         touching(ball, paddle1)

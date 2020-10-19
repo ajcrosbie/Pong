@@ -28,6 +28,21 @@ class paddle():
         self.pos = (self.pos[0], self.pos[1] + speed)
         self.speed = speed
 
+    def highMove(self, keys):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+        if keys[pygame.K_DOWN] and self.player == 1:
+            self.speed = 1 + self.speed
+        elif keys[pygame.K_UP] and self.player == 1:
+            self.speed = -1 + self.speed
+        elif keys[pygame.K_s] and self.player == 0:
+            self.speed = 1 + self.speed
+        elif keys[pygame.K_w] and self.player == 0:
+            self.speed = -1 + self.speed
+        self.pos = (self.pos[0], self.pos[1] + self.speed)
+
     def draw(self, surface):
         pygame.draw.rect(surface, self.colour, ((self.pos), (self.size)))
 
