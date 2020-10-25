@@ -3,12 +3,12 @@ import pygame
 
 
 class paddle():
-    def __init__(self, pos, player):
+    def __init__(self, pos, player, size):
         self.colour = 255, 255, 255
         self.pos = pos
         self.player = player
         self.speed = 0
-        # self.size = (30, 100)
+        self.size = size
 
     def move(self, keys, speed):
         for event in pygame.event.get():
@@ -52,7 +52,6 @@ class ball():
         self.pos = pos
         self.colour = 255, 255, 255
         self.dir = 0
-        self.size = 10
         self.dir1 = 20
 
     def move(self):
