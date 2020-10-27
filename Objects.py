@@ -63,6 +63,8 @@ class ball():
     def bounce(self, paddle):
         if paddle == 0:
             self.dir = self.dir * -1
+        elif paddle == 1:
+            self.dir1 = self.dir1 * -1
         else:
             self.dir = self.dir + paddle.speed
             self.dir1 = self.dir1 * -1
