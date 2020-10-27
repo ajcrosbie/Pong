@@ -25,7 +25,6 @@ def custom():
     else:
         GameMode = 'normal'
     t = False
-    # choice = 0
     choice = input('would you like to change speed, y/n? ')
     if choice == 'y':
         print('what speed? 1 to 30 is recomended')
@@ -39,7 +38,6 @@ def custom():
     else:
         speed = 10
     t = False
-    # choice = 0
     choice = input('would you like to change size of paddle, y/n ')
     if choice == 'y':
         print('what size(y co-ordinate)? 1 to 400 is recomended) ')
@@ -62,7 +60,6 @@ def custom():
         size3 = (size2, size)
     else:
         size3 = (30, 100)
-    # choice = 0
     choice = input('do you want to change ball speed? y/n ')
     if choice == 'y':
         print('what speed? 1 to 30 is recomended')
@@ -77,7 +74,6 @@ def custom():
                 t = True
     else:
         ballSpeed = 20
-    # choice = 0
     choice = input('would you like to change ball size, y/n? ')
     if choice == 'y':
         print('what ball size? 1 to 30 is recomended')
@@ -90,20 +86,28 @@ def custom():
                 t = True
     else:
         Ballsize = 20
-    # choice = 0
     choice = input('would you like to add obsticles, y/n? ')
     if choice == 'y':
         obsticles = []
         num = int(input('how many obsticles?'))
         for i in range(num):
-            size0 = int(input('what size (x co-ordinate)?'))
-            size1 = int(input('what size (y co-ordinate)?'))
             location0 = int(input('where (x co-ordinate)?'))
             location1 = int(input('where (y co-ordinate)?'))
+            size0 = int(input('what size (x co-ordinate)?'))
+            size1 = int(input('what size (y co-ordinate)?'))
             obsticles.append(Objects.paddle(
                 (location0, location1), 'block', (size0, size1)))
+    else:
+        obsticles = []
+    choice = input('would you like to change display size, y/n')
+    if choice == 'y':
+        width = int(input('what width?'))
+        height = int(input('what height?'))
+        size = (width, height)
+    else:
+        size = (1000, 500)
 
-    return GameMode, speed, size3, ballSpeed, Ballsize, obsticles
+    return GameMode, speed, size3, ballSpeed, Ballsize, obsticles, size
 
 
 def redrawwindow(win, paddle, paddle1, ball, obsticles):
@@ -126,9 +130,9 @@ def touching(ball, paddle):
     pass
 
 
-def reset(paddle, paddle1, ball, height):
+def reset(paddle, paddle1, ball, height, width):
     paddle.pos = (10, height/2 - 50)
-    paddle1.pos = (1000 - paddle1.size[0] - 10, height/2 - 50)
+    paddle1.pos = (width - paddle1.size[0] - 10, height/2 - 50)
     ball.pos = (500, 250)
     ball.dir = 0
     paddle.speed = 0
@@ -142,6 +146,9 @@ def main():
     ballSpeed = 20
     ballsize = 10
     ballsize = 15
+    width = 1000
+    height = 500
+    obsticles = []
     v = input('do you want to customise the game? y/n ')
     if v == 'y':
         v = custom()
@@ -151,15 +158,15 @@ def main():
         ballSpeed = v[3]
         ballsize = v[4]
         obsticles = v[5]
+        width = v[6][0]
+        height = v[6][1]
 
-    width = 1000
-    height = 500
     score1 = 0
     score2 = 0
     win = pygame.display.set_mode((width, height))
     paddle = Objects.paddle((10, height/2 - 50), 0, size)
-    paddle1 = Objects.paddle((1000 - size[0] - 10, height/2 - 50), 1, size)
-    ball = Objects.ball((500, 250))
+    paddle1 = Objects.paddle((width - size[0] - 10, height/2 - 50), 1, size)
+    ball = Objects.ball((width//2, height//2))
     ball.dir1 = ballSpeed
     ball.size = ballsize
     clock = pygame.time.Clock()
@@ -179,17 +186,17 @@ def main():
         touching(ball, paddle1)
         for i in obsticles:
             touching(ball, i)
-        if ball.pos[1] < 0 or ball.pos[1] > 500:
+        if ball.pos[1] < 0 or ball.pos[1] > height:
             ball.bounce(0)
 
         if ball.pos[0] < 0:
             score1 = score1 + 1
             print(score1, ':', score2)
-            reset(paddle, paddle1, ball, height)
+            reset(paddle, paddle1, ball, height, width)
         elif ball.pos[0] > width:
             score2 = score2 + 1
             print(score1, ':', score2)
-            reset(paddle, paddle1, ball, height)
+            reset(paddle, paddle1, ball, height, width)
         redrawwindow(win, paddle, paddle1, ball, obsticles)
 
 
