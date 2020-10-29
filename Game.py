@@ -255,7 +255,6 @@ def main():
                 if colour > len(colours)-1:
                     colour = 0
                 ball.colour = colours[colour]
-            print(colour)
             dvdDraw(win, ball)
 
         else:
