@@ -53,6 +53,7 @@ class ball():
         self.colour = 255, 255, 255
         self.dir = 0
         self.dir1 = 20
+        self.colourf = 0
 
     def move(self):
         self.pos = (self.pos[0] + self.dir1, self.pos[1] + self.dir)
@@ -63,7 +64,9 @@ class ball():
     def bounce(self, paddle):
         if paddle == 0:
             self.dir = self.dir * -1
-        elif paddle == 1:
+        elif paddle.player == 'block':
+            self.dir = self.dir * -1
+        elif paddle.player == 'block1':
             self.dir1 = self.dir1 * -1
         else:
             self.dir = self.dir + paddle.speed

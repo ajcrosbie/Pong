@@ -34,6 +34,10 @@ def custom():
         ballSpeed = 20
         Ballsize = 20
         obsticles = []
+        obsticles.append(Objects.paddle((0, 0), 'block1', (25, 500)))
+        obsticles.append(Objects.paddle((0, 475), 'block', (1000, 25)))
+        obsticles.append(Objects.paddle((0, 0), 'block', (1000, 25)))
+        obsticles.append(Objects.paddle((975, 0), 'block1', (25, 500)))
         size = (1000, 500)
     else:
 
@@ -134,9 +138,11 @@ def redrawwindow(win, paddle, paddle1, ball, obsticles):
     pass
 
 
-def dvdDraw(win, ball):
+def dvdDraw(win, ball, obsticles):
     win.fill((0, 0, 0))
     ball.draw(win)
+    for i in obsticles:
+        i.draw(win)
     pygame.display.update()
 
 
@@ -162,6 +168,29 @@ def reset(paddle, paddle1, ball, height, width):
     ball.dir = 0
     paddle.speed = 0
     paddle1.speed = 0
+
+
+def dvd(ball, obsticles, win):
+    winQuit()
+    ball.move()
+    colours = [(255, 0, 0), (255, 255, 0), (0, 255, 0),
+               (0, 255, 255), (0, 0, 255), (255, 0, 255)]
+    for i in obsticles:
+        c = ball.dir
+        v = ball.dir1
+        touching(ball, i)
+        if c != ball.dir:
+            ball.colourf = ball.colourf + 1
+            if ball.colourf == 6:
+                ball.colourf = 0
+            ball.colour = colours[ball.colourf]
+        if v != ball.dir1:
+            ball.colourf = ball.colourf + 1
+            if ball.colourf == 6:
+                ball.colourf = 0
+            ball.colour = colours[ball.colourf]
+
+    dvdDraw(win, ball, obsticles)
 
 
 def main():
@@ -195,68 +224,14 @@ def main():
     ball.dir1 = ballSpeed
     ball.size = ballsize
     if GameMode == 'dvd':
-        f = random.randrange(30)
+        f = random.randrange(10, 20)
         ball.dir = ball.dir + f
-        colours = [(255, 0, 0), (255, 255, 0), (0, 255, 0),
-                   (0, 255, 255), (0, 0, 255), (255, 0, 255)]
-        colour = 0
     clock = pygame.time.Clock()
     while True:
         pygame.time.delay(60)
         clock.tick(10)
-
         if GameMode == 'dvd':
-            ball.move()
-            winQuit()
-            if ball.pos[0] - 10 < 0 and ball.pos[1] + 10 > height:
-                ball.bounce(0)
-                ball.bounce(1)
-                colour = colour + 1
-                if colour > len(colours)-1:
-                    colour = 0
-                ball.colour = colours[colour]
-            elif ball.pos[0] + 10 > width and ball.pos[1] + 10 > height:
-                ball.bounce(0)
-                ball.bounce(1)
-                colour = colour + 1
-                if colour > len(colours)-1:
-                    colour = 0
-                ball.colour = colours[colour]
-            elif ball.pos[0] - 10 < 0 and ball.pos[1] - 10 < 0:
-                ball.bounce(0)
-                ball.bounce(1)
-                colour = colour + 1
-                if colour > len(colours)-1:
-                    colour = 0
-                ball.colour = colours[colour]
-            elif ball.pos[0] + 10 > width and ball.pos[1] - 10 < 0:
-                ball.bounce(0)
-                ball.bounce(1)
-                colour = colour + 1
-                if colour > len(colours)-1:
-                    colour = 0
-                ball.colour = colours[colour]
-
-            elif ball.pos[1] < 0 or ball.pos[1] > height:
-                ball.bounce(0)
-                colour = colour + 1
-                if colour > len(colours)-1:
-                    colour = 0
-                ball.colour = colours[colour]
-            elif ball.pos[0] < 0:
-                ball.bounce(1)
-                colour = colour + 1
-                if colour > len(colours)-1:
-                    colour = 0
-                ball.colour = colours[colour]
-            elif ball.pos[0] > width:
-                ball.bounce(1)
-                colour = colour + 1
-                if colour > len(colours)-1:
-                    colour = 0
-                ball.colour = colours[colour]
-            dvdDraw(win, ball)
-
+            dvd(ball, obsticles, win)
         else:
             keys = pygame.key.get_pressed()
             if GameMode == 'high':
