@@ -34,8 +34,9 @@ def custom():
         ballSpeed = 20
         Ballsize = 20
         obsticles = []
-        obsticles.append(Objects.paddle((0, 0), 'block1', (25, 500)))
-        obsticles.append(Objects.paddle((0, 475), 'block', (1000, 25)))
+        obsticles.append(Objects.paddle((0, 0), 'block1', (25, 500), 'left'))
+        obsticles.append(Objects.paddle(
+            (0, 475), 'block', (1000, 25), 'botom'))
         obsticles.append(Objects.paddle((0, 0), 'block', (1000, 25)))
         obsticles.append(Objects.paddle((975, 0), 'block1', (25, 500)))
         size = (1000, 500)
@@ -152,12 +153,29 @@ def winQuit():
             pygame.quit()
 
 
-def touching(ball, paddle):
+def touching(ball, paddle, dvd=False):
+    if dvd:
+        for c in range(paddle.size[1]+10):
+            if ball.pos[1] == paddle.pos[1]+c:
+                for i in range(paddle.size[0]+10):
+                    if ball.pos[0] == paddle.pos[0] + i:
+                        ball.bounce(paddle)
+                    if ball.pos[0] == paddle.pos[0] - i:
+                        ball.bounce(paddle)
+
+            if ball.pos[1] == paddle.pos[1]-c:  # and paddle.side == 'bottom':
+                for i in range(paddle.size[0]+10):
+                    if ball.pos[0] == paddle.pos[0] + i:
+                        ball.bounce(paddle)
+                        if ball.pos[0] == paddle.pos[0] - i:
+                            ball.bounce(paddle)
+
     for i in range(paddle.size[1]):
         if ball.pos[1] == paddle.pos[1] + i:
             for i in range(paddle.size[0]):
                 if ball.pos[0] == paddle.pos[0] + i:
                     ball.bounce(paddle)
+
     pass
 
 
@@ -178,7 +196,7 @@ def dvd(ball, obsticles, win):
     for i in obsticles:
         c = ball.dir
         v = ball.dir1
-        touching(ball, i)
+        touching(ball, i, True)
         if c != ball.dir:
             ball.colourf = ball.colourf + 1
             if ball.colourf == 6:
@@ -189,7 +207,7 @@ def dvd(ball, obsticles, win):
             if ball.colourf == 6:
                 ball.colourf = 0
             ball.colour = colours[ball.colourf]
-
+    print(ball.pos)
     dvdDraw(win, ball, obsticles)
 
 

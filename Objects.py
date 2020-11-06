@@ -3,7 +3,7 @@ import pygame
 
 
 class paddle():
-    def __init__(self, pos, player, size):
+    def __init__(self, pos, player, size, side=0):
         self.colour = 255, 255, 255
         self.pos = pos
         self.player = player
