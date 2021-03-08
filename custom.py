@@ -30,19 +30,18 @@ def custom():
         GameMode = 'normal'
     if GameMode == 'dvd':
         pass
-    #     speed = 10
-    #     size3 = (30, 100)
-    #     ballSpeed = 20
-    #     Ballsize = 20
-    #     obsticles = []
-    #     obsticles.append(Objects.paddle((0, 0), 'block1', (25, 500), 'left'))
-    #     obsticles.append(Objects.paddle(
-    #         (0, 475), 'block', (1000, 25), 'botom'))
-    #     obsticles.append(Objects.paddle((0, 0), 'block', (1000, 25)))
-    #     obsticles.append(Objects.paddle((975, 0), 'block1', (25, 500)))
-    #     size = (1000, 500)
+        speed = 10
+        size3 = (30, 100)
+        ballSpeed = 10
+        Ballsize = 20
+        obsticles = []
+        obsticles.append(Objects.paddle((0, 0), 'block1', (25, 500)))
+        obsticles.append(Objects.paddle(
+            (0, 475), 'block', (1000, 25)))
+        obsticles.append(Objects.paddle((0, 0), 'block', (1000, 25)))
+        obsticles.append(Objects.paddle((975, 0), 'block1', (25, 500)))
+        size = (1000, 500)
     else:
-
         t = False
         choice = input('would you like to change speed, y/n? ')
         if choice == 'y':
@@ -152,25 +151,24 @@ def redrawwindow(win, paddle, paddle1, ball, obsticles):
     for i in obsticles:
         i.draw(win)
     pygame.display.update()
-    pass
 
 
 def touching(ball, paddle, dvd=False):
-    if dvd:
-        for c in range(paddle.size[1]+10):
-            if ball.pos[1] == paddle.pos[1]+c:
-                for i in range(paddle.size[0]+10):
-                    if ball.pos[0] == paddle.pos[0] + i:
-                        ball.bounce(paddle)
-                    if ball.pos[0] == paddle.pos[0] - i:
-                        ball.bounce(paddle)
+    # for c in range(paddle.size[1]+10):
+    #     if ball.pos[1] == paddle.pos[1]+c:
+    #         for i in range(paddle.size[0]+10):
+    #             if ball.pos[0] == paddle.pos[0] + i:
+    #                 ball.bounce(paddle)
+    #             if ball.pos[0] == paddle.pos[0] - i:
+    #                 ball.bounce(paddle)
 
-            if ball.pos[1] == paddle.pos[1]-c:  # and paddle.side == 'bottom':
-                for i in range(paddle.size[0]+10):
-                    if ball.pos[0] == paddle.pos[0] + i:
-                        ball.bounce(paddle)
-                        if ball.pos[0] == paddle.pos[0] - i:
-                            ball.bounce(paddle)
+    #     if ball.pos[1] == paddle.pos[1]-c:  # and paddle.side == 'bottom':
+    #         for i in range(paddle.size[0]+10):
+    #             if ball.pos[0] == paddle.pos[0] + i:
+    #                 ball.bounce(paddle)
+    #                 if ball.pos[0] == paddle.pos[0] - i:
+    #                     ball.bounce(paddle)
+
     for i in range(paddle.size[1]):
         if ball.pos[1] == paddle.pos[1] + i:
             for i in range(paddle.size[0]):
@@ -180,27 +178,26 @@ def touching(ball, paddle, dvd=False):
     pass
 
 
-# def dvd(ball, obsticles, win):
-#     winQuit()
-#     ball.move()
-#     colours = [(255, 0, 0), (255, 255, 0), (0, 255, 0),
-#                (0, 255, 255), (0, 0, 255), (255, 0, 255)]
-#     for i in obsticles:
-#         c = ball.dir
-#         v = ball.dir1
-#         touching(ball, i, True)
-#         if c != ball.dir:
-#             ball.colourf = ball.colourf + 1
-#             if ball.colourf == 6:
-#                 ball.colourf = 0
-#             ball.colour = colours[ball.colourf]
-#         if v != ball.dir1:
-#             ball.colourf = ball.colourf + 1
-#             if ball.colourf == 6:
-#                 ball.colourf = 0
-#             ball.colour = colours[ball.colourf]
-#     print(ball.pos)
-#     dvdDraw(win, ball, obsticles)
+def dvd(ball, obsticles, win):
+    winQuit()
+    ball.move()
+    colours = [(255, 0, 0), (255, 255, 0), (0, 255, 0),
+               (0, 255, 255), (0, 0, 255), (255, 0, 255)]
+    for i in obsticles:
+        c = ball.dir
+        v = ball.dir1
+        touching(ball, i, True)
+        if c != ball.dir:
+            ball.colourf = ball.colourf + 1
+            if ball.colourf == 6:
+                ball.colourf = 0
+            ball.colour = colours[ball.colourf]
+        if v != ball.dir1:
+            ball.colourf = ball.colourf + 1
+            if ball.colourf == 6:
+                ball.colourf = 0
+            ball.colour = colours[ball.colourf]
+    redrawwindow(win, ball, obsticles[0], obsticles[1], obsticles)
 
 
 def main():
@@ -239,12 +236,13 @@ def main():
     score1 = 0
     score2 = 0
     while True:
-        pygame.time.delay(60)
-        clock.tick(10)
         if GameMode == 'dvd':
-            pass
-            # dvd(ball, obsticles, win)
+            pygame.time.delay(30)
+            clock.tick(20)
+            dvd(ball, obsticles, win)
         else:
+            pygame.time.delay(60)
+            clock.tick(20)
             keys = pygame.key.get_pressed()
             if GameMode == 'high':
                 paddle.highMove(keys, speed)

@@ -19,30 +19,12 @@ def winQuit():
             pygame.quit()
 
 
-def touching(ball, paddle, dvd=False):
-    if dvd:
-        for c in range(paddle.size[1]+10):
-            if ball.pos[1] == paddle.pos[1]+c:
-                for i in range(paddle.size[0]+10):
-                    if ball.pos[0] == paddle.pos[0] + i:
-                        ball.bounce(paddle)
-                    if ball.pos[0] == paddle.pos[0] - i:
-                        ball.bounce(paddle)
-
-            if ball.pos[1] == paddle.pos[1]-c:  # and paddle.side == 'bottom':
-                for i in range(paddle.size[0]+10):
-                    if ball.pos[0] == paddle.pos[0] + i:
-                        ball.bounce(paddle)
-                        if ball.pos[0] == paddle.pos[0] - i:
-                            ball.bounce(paddle)
-
+def touching(ball, paddle):
     for i in range(paddle.size[1]):
         if ball.pos[1] == paddle.pos[1] + i:
             for i in range(paddle.size[0]):
                 if ball.pos[0] == paddle.pos[0] + i:
                     ball.bounce(paddle)
-
-    pass
 
 
 def reset(paddle, paddle1, ball, height, width):
@@ -72,14 +54,11 @@ def main():
     ball = Objects.ball((width//2, height//2))
     ball.dir1 = ballSpeed
     ball.size = ballsize
-    if GameMode == 'dvd':
-        f = random.randrange(10, 20)
-        ball.dir = ball.dir + f
+
     clock = pygame.time.Clock()
     while True:
         pygame.time.delay(60)
         clock.tick(10)
-
         keys = pygame.key.get_pressed()
         paddle.move(keys, speed)
         paddle1.move(keys, speed)
@@ -96,7 +75,7 @@ def main():
         elif ball.pos[0] > width:
             score2 = score2 + 1
             print(score1, ':', score2)
-            reset(paddle, paddle1, ball, height, width)
+        reset(paddle, paddle1, ball, height, width)
         redrawwindow(win, paddle, paddle1, ball)
 
 
