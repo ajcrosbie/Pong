@@ -26,6 +26,20 @@ class paddle():
         elif keys[pygame.K_w] and self.player == 0:
             Cspeed = -speed
         self.pos = (self.pos[0], self.pos[1] + Cspeed)
+        self.speed = Cspeeds
+
+    def move1(self, action):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+        Cspeed = 0
+
+        if action == 0:
+            Cspeed = 8
+        elif action == 1:
+            Cspeed = -8
+        self.pos = (self.pos[0], self.pos[1] + Cspeed)
         self.speed = Cspeed
 
     def highMove(self, keys, speed):
@@ -52,6 +66,7 @@ class ball():
         self.pos = pos
         self.colour = 255, 255, 255
         self.dir = 0
+        self.size = 10
         self.dir1 = 20
         self.colourf = 0
 
@@ -71,3 +86,6 @@ class ball():
         else:
             self.dir = self.dir + paddle.speed
             self.dir1 = self.dir1 * -1
+
+    def bounce1(self):
+        self.dir1 = self.dir1 * -1
